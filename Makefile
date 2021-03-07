@@ -7,7 +7,7 @@
 all: test analyse
 
 clean:
-	git clean -Xfq build
+	git clean -Xfq bootstrap build
 
 clean-all: clean
 	rm -rf ./vendor
