@@ -20,9 +20,7 @@ class StockNow extends Command
         $stocks = $this->argument('stocks');
 
         if (empty($stocks)) {
-            $this->output->info('無傳入任何資訊');
-
-            return 0;
+            $stocks = config('pastock.default_stocks');
         }
 
         $entities = array_map(function ($stock) use ($now) {
