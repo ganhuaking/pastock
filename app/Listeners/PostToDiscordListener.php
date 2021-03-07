@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\StockNowEvent;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -16,9 +17,12 @@ class PostToDiscordListener
             'url' => $discordWebhook,
         ]);
 
+        /** @var View $view */
+        $view = view('discord.stock_now', ['entities' => $event->entities]);
+
         Http::post($discordWebhook, [
             'username' => 'Pastock',
-            'content' => json_encode($event->entity),
+            'content' => $view->render(),
         ]);
     }
 }

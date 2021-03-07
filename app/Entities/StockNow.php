@@ -4,13 +4,13 @@ namespace App\Entities;
 
 use Carbon\Carbon;
 use DateTimeZone;
-use Illuminate\Support\Collection;
+use JsonSerializable;
 
 /**
  * 股票即時資訊
  *
  */
-class StockNow extends Collection
+class StockNow implements JsonSerializable
 {
     /** @var string 股票代號 */
     public string $symbol;
@@ -61,5 +61,10 @@ class StockNow extends Collection
         $instance->closing_price = (float)$data['z'];
 
         return $instance;
+    }
+
+    public function jsonSerialize()
+    {
+        return (array)$this;
     }
 }

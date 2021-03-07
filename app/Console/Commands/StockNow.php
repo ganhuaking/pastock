@@ -4,61 +4,56 @@ namespace App\Console\Commands;
 
 use App\Entities\StockNow as StockNowEntity;
 use App\Events\StockNowEvent;
+use App\Stock\Now;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
 
 /**
  * @see https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw&json=1&delay=0
  */
 class StockNow extends Command
 {
-    protected $signature = 'stock:now {stocks*}';
+    protected $signature = 'stock:now {stocks?*}';
 
     protected $description = 'Stock Now';
 
-    public function handle(): int
+    public function handle(Now $now): int
     {
         $stocks = $this->argument('stocks');
 
-        foreach ($stocks as $stock) {
-            $this->parse($stock);
+        if (empty($stocks)) {
+            $this->output->info('無傳入任何資訊');
+
+            return 0;
         }
 
-        return 0;
-    }
+        $entities = array_map(function ($stock) use ($now) {
+            return $now->parse($stock);
+        }, $stocks);
 
-    private function parse(string $stock)
-    {
-        $response = Http::get(sprintf(
-            'https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_%s.tw&json=1&delay=0',
-            $stock
-        ));
-
-        $data = $response->json('msgArray')[0];
-
-        $entity = StockNowEntity::createFromApiV1($data);
-
-        $this->output->title(sprintf(
-            '%s %s 在 %s 的即時資訊',
-            $entity->symbol,
-            $entity->name_short,
-            $entity->datetime->toDateTimeString()
-        ));
-
-        $this->table([
-            '開盤價',
-            '最高價',
-            '最低價',
-            '收盤價',
-        ], [
-            [
+        $rows = array_map(function (StockNowEntity $entity) {
+            return [
+                $entity->datetime->toDateTimeString(),
+                $entity->symbol,
+                $entity->name_short,
                 sprintf('%.2f', $entity->opening_price),
                 sprintf('%.2f', $entity->maximum_price),
                 sprintf('%.2f', $entity->minimum_price),
                 sprintf('%.2f', $entity->closing_price),
-            ],
-        ]);
+            ];
+        }, $entities);
 
-        event(new StockNowEvent($entity));
+        $this->table([
+            '時間',
+            '股票代號',
+            '股票簡稱',
+            '開盤價',
+            '最高價',
+            '最低價',
+            '收盤價',
+        ], $rows);
+
+        event(new StockNowEvent(...$entities));
+
+        return 0;
     }
 }

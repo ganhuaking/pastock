@@ -6,7 +6,13 @@ use App\Entities\StockNow;
 
 class StockNowEvent
 {
-    public function __construct(public StockNow $entity)
+    /**
+     * @var StockNow[]
+     */
+    public array $entities;
+
+    public function __construct(StockNow ...$entities)
     {
+        $this->entities = $entities;
     }
 }
