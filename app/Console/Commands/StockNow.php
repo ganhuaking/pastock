@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Entities\StockNow as StockNowEntity;
 use App\Events\StockNowEvent;
 use App\Stock\Now;
 use Illuminate\Console\Command;
@@ -30,29 +29,7 @@ class StockNow extends Command
             return $now->parse($stock);
         }, $stocks);
 
-        $rows = array_map(function (StockNowEntity $entity) {
-            return [
-                $entity->datetime->toDateTimeString(),
-                $entity->symbol,
-                $entity->name_short,
-                sprintf('%.2f', $entity->opening_price),
-                sprintf('%.2f', $entity->maximum_price),
-                sprintf('%.2f', $entity->minimum_price),
-                sprintf('%.2f', $entity->closing_price),
-            ];
-        }, $entities);
-
-        $this->table([
-            '時間',
-            '股票代號',
-            '股票簡稱',
-            '開盤價',
-            '最高價',
-            '最低價',
-            '收盤價',
-        ], $rows);
-
-        event(new StockNowEvent(...$entities));
+        event(new StockNowEvent($this, ...$entities));
 
         return 0;
     }

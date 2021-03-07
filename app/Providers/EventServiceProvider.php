@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Events\StockNowEvent;
-use App\Listeners\PostToDiscordListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
@@ -25,6 +24,12 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        // Event::listen(StockNowEvent::class, PostToDiscordListener::class);
+        collect(config('pastock.basic_listener'))->each(function ($listener) {
+            Event::listen(StockNowEvent::class, $listener);
+        });
+
+        collect(config('pastock.addition_listener'))->each(function ($listener) {
+            Event::listen(StockNowEvent::class, $listener);
+        });
     }
 }
