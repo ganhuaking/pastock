@@ -29,8 +29,8 @@ jobs:
           max_attempts: 5
           command: composer install --prefer-dist --no-interaction --no-progress
 
-      - name: Test stock:now command to see 2330.TW
-        run: php pastock stock:now 2330
+      - name: Run stock:now command
+        run: php pastock stock:now
 
-      - name: Test stock:query command to see 2330.TW
+      - name: Run stock:query command
         run: php pastock stock:query 2330

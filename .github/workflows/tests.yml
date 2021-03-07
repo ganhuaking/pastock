@@ -31,9 +31,3 @@ jobs:
 
       - name: Execute tests
         run: phpdbg -qrr vendor/bin/phpunit
-
-      - name: Test stock:now command to see 2330.TW
-        run: php pastock stock:now 2330
-
-      - name: Test stock:query command to see 2330.TW
-        run: php pastock stock:query 2330
