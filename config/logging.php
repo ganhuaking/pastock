@@ -44,7 +44,7 @@ return [
         'stdout' => [
             'driver' => 'single',
             'path' => 'php://stdout',
-            'level' => 'debug',
+            'level' => env('APP_DEBUG') ? 'debug' : 'warning',
         ],
 
         'single' => [

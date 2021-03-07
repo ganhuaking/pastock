@@ -24,3 +24,6 @@ analyse:
 
 coverage: test
 	@if [ "`uname`" = "Darwin" ]; then open build/coverage/index.html; fi
+
+image:
+	docker build -t pastock .

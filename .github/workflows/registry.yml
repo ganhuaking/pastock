@@ -1,0 +1,17 @@
+name: Publish Docker
+
+on: [push]
+
+jobs:
+  latest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Build latest version and publish to GitHub Registry
+        uses: elgohr/Publish-Docker-Github-Action@2.22
+        with:
+          name: ganhuaking/pastock
+          tags: "latest"
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_PAT }}
+          registry: ghcr.io

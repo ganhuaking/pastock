@@ -31,3 +31,9 @@ jobs:
 
       - name: Execute tests
         run: phpdbg -qrr vendor/bin/phpunit
+
+      - name: Run stock:now command
+        run: php pastock stock:now
+
+      - name: Run stock:query command
+        run: php pastock stock:query 2330
