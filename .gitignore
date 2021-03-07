@@ -37,6 +37,7 @@ Desktop.ini
 
 # Config files
 /phpunit.xml
+.env
 
 # Cache files
 /.phpunit.result.cache
