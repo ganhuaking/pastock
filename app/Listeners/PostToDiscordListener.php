@@ -18,7 +18,7 @@ class PostToDiscordListener
 
         Http::post($discordWebhook, [
             'username' => 'Pastock',
-            'content' => json_encode($event->data),
+            'content' => json_encode($event->entity),
         ]);
     }
 }

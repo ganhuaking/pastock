@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 /**
  * @see https://clu.gitbook.io/python-web-crawler-note/45-tai-wan-zheng-quan-jiao-yi-suo
