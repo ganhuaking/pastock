@@ -48,9 +48,13 @@ class StockNow implements JsonSerializable
         // 基本資料
         $instance->symbol = $data['c'];
         $instance->name_short = $data['n'];
+
+        // ot 為收盤時間，t 為當下時間
+        $time = $data['ot'] ?? $data['t'];
+
         $instance->datetime = Carbon::createFromFormat(
             'Ymd H:i:s',
-            "{$data['d']} {$data['ot']}",
+            "{$data['d']} {$time}",
             new DateTimeZone('Asia/Taipei')
         );
 
