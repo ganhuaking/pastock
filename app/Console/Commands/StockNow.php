@@ -27,6 +27,10 @@ class StockNow extends Command
             return $now->parse($stock);
         }, $stocks);
 
+        if ($this->output->isVeryVerbose()) {
+            dump(...$entities);
+        }
+
         event(new StockNowEvent($this, ...$entities));
 
         return 0;

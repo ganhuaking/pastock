@@ -27,3 +27,6 @@ coverage: test
 
 image:
 	docker build -t pastock .
+
+run:
+	docker run --rm -it pastock stock:now
