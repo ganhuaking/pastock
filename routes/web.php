@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Line\NotifyAuthorize;
+use App\Http\Controllers\Line\NotifyCallback;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/auth/line/authorize', NotifyAuthorize::class)->name('auth.line.authorize');
+Route::post('/auth/line/callback', NotifyCallback::class)->name('auth.line.callback');
