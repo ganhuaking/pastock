@@ -27,7 +27,7 @@ class StockPers extends Command
                                 {--limit= : 限制筆數，預設不限}
                                 ';
 
-    protected $description = 'Stock Query';
+    protected $description = 'Stock PER/YR/PBR';
 
     public function handle(): int
     {
@@ -101,7 +101,8 @@ class StockPers extends Command
             $collection = $collection->take($limit);
         }
 
-        $this->table([
+        $this->table(
+            [
             '股票代號',
             '股票名稱',
             '殖利率',
@@ -109,7 +110,7 @@ class StockPers extends Command
             '本益比',
             '股價淨值比',
             '財報年／季',
-        ],
+            ],
             $collection
         );
 

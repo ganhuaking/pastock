@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\OpenIDConnect;
-
 
 use Illuminate\Support\Manager as BaseManager;
 use MilesChou\Psr\Http\Client\HttpClientInterface;
