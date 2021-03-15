@@ -36,3 +36,6 @@ debug:
 
 prod:
 	heroku config:set APP_DEBUG=false LOG_LEVEL=info
+
+value:
+	php pastock stock:pers --filter-per-lt=13 --filter-pbr-lt=0.7

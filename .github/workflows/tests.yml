@@ -37,3 +37,6 @@ jobs:
 
       - name: Run stock:query command
         run: php pastock stock:query 2330
+
+      - name: Run stock:query command
+        run: php pastock stock:pers --filter-per-lt=13 --filter-pbr-lt=0.7
