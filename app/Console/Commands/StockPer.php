@@ -2,14 +2,16 @@
 
 namespace App\Console\Commands;
 
+use App\Stock\Per;
+use App\Stock\Query;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
+use RuntimeException;
 
 /**
  * @see https://www.twse.com.tw/exchangeReport/BWIBBU_d?response=json&date=20170906&selectType=ALL
  * @see https://www.twse.com.tw/exchangeReport/BWIBBU_d?response=html&date=20170906&selectType=ALL
  */
-class StockPers extends Command
+class StockPer extends Command
 {
     protected $signature = 'stock:pers
                                 {--year= : 查詢年}
@@ -25,11 +27,12 @@ class StockPers extends Command
                                 {--sort=0 : 排序，使用數字 index}
                                 {--sort-reverse : 反向排序}
                                 {--limit= : 限制筆數，預設不限}
+                                {--price : 股價，會查另一個 API，比較慢}
                                 ';
 
     protected $description = 'Stock PER/YR/PBR';
 
-    public function handle(): int
+    public function handle(Per $per, Query $query): int
     {
         $year = $this->option('year') ?? date('Y');
         $month = $this->option('month') ?? date('m');
@@ -47,19 +50,12 @@ class StockPers extends Command
         $limit = (int)$this->option('limit');
 
         if ($filterPbrGt && $filterPbrLt) {
-            throw new \RuntimeException('不可同時啟用股價淨值比大於與小於 1');
+            throw new RuntimeException('不可同時啟用股價淨值比大於與小於 1');
         }
-
-        $response = Http::get(sprintf(
-            'https://www.twse.com.tw/exchangeReport/BWIBBU_d?response=json&date=%s%s%s&selectType=ALL&_=161',
-            $year,
-            $month,
-            $day
-        ));
 
         $this->output->title("{$year} 年 {$month} 月 {$day} 日 個股日本益比、殖利率及股價淨值比");
 
-        $collection = collect($response->json('data'));
+        $collection = $per->build($year, $month, $day);
 
         if ($filterStock) {
             $collection = $collection->whereIn(0, $filterStock);
@@ -89,6 +85,38 @@ class StockPers extends Command
             $collection = $collection->where(5, '<', $filterPbrLt);
         }
 
+        if ($limit) {
+            $collection = $collection->take($limit);
+        }
+
+        $fields = [
+            '股票代號',
+            '股票名稱',
+            '殖利率',
+            '股利年度',
+            '本益比',
+            '股價淨值比',
+            '財報年／季',
+        ];
+
+        if ($this->option('price')) {
+            $fields[] = '股價';
+
+            $collection = $collection->map(function ($value) use ($year, $month, $day, $query) {
+                if ($this->output->isVeryVerbose()) {
+                    $this->info("Parse stock {$value[0]}");
+                }
+
+                usleep(100000);
+
+                $query = $query->parse($year, $month, $day, $value[0]);
+
+                $value[] = collect($query->data)->last()[6];
+
+                return $value;
+            });
+        }
+
         if ($sort) {
             if ($sortReverse) {
                 $collection = $collection->sortByDesc($sort);
@@ -97,22 +125,7 @@ class StockPers extends Command
             }
         }
 
-        if ($limit) {
-            $collection = $collection->take($limit);
-        }
-
-        $this->table(
-            [
-            '股票代號',
-            '股票名稱',
-            '殖利率',
-            '股利年度',
-            '本益比',
-            '股價淨值比',
-            '財報年／季',
-            ],
-            $collection
-        );
+        $this->table($fields, $collection);
 
         return 0;
     }

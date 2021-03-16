@@ -12,12 +12,13 @@ use Illuminate\Support\Facades\Http;
  */
 class Query
 {
-    public function parse(string $year, string $month, string $stock): StockQuery
+    public function parse(string $year, string $month, string $day, string $stock): StockQuery
     {
         $response = Http::get(sprintf(
-            'http://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=%s%s01&stockNo=%s',
+            'http://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=%s%s%s&stockNo=%s',
             $year,
             $month,
+            $day,
             $stock
         ));
 
