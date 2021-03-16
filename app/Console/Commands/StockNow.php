@@ -7,7 +7,7 @@ use App\Stock\Now;
 use Illuminate\Console\Command;
 
 /**
- * @see https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw&json=1&delay=0
+ * @see https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw
  */
 class StockNow extends Command
 {

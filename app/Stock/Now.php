@@ -7,7 +7,7 @@ use App\Entities\StockNow as StockNowEntity;
 use Illuminate\Support\Facades\Http;
 
 /**
- * @see https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw&json=1&delay=0
+ * @see https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw
  * @use Http
  */
 class Now
@@ -15,7 +15,7 @@ class Now
     public function parse(string $symbol): StockNow
     {
         $response = Http::get(sprintf(
-            'https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_%s.tw&json=1&delay=0',
+            'https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_%s.tw',
             $symbol
         ));
 
