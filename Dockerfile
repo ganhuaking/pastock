@@ -19,5 +19,5 @@ ENV APP_NAME=Pastock \
     CACHE_DRIVER=file \
     QUEUE_CONNECTION=sync
 
-ENTRYPOINT ["php", "/usr/src/app/pastock"]
+ENTRYPOINT ["php", "/usr/src/app/artisan"]
 CMD ["list"]

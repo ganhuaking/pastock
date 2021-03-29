@@ -1,6 +1,6 @@
 # 台股資訊 API
 
-此專案使用 PHP 8.0 + Laravel 8 撰寫，主要運行在 console 指令上。
+此專案使用 PHP 8.0 + Laravel 8 撰寫。
 
 ## 安裝環境
 
@@ -10,10 +10,10 @@
 composer install
 ```
 
-使用指令入口 `pastock` 即可知道有什麼指令可以使用：
+使用指令入口 `artisan` 即可知道有什麼指令可以使用：
 
 ```
-$ php pastock
+$ php artisan
 Laravel Framework 8.31.0
 
 Usage:

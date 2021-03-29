@@ -33,10 +33,10 @@ jobs:
         run: phpdbg -qrr vendor/bin/phpunit
 
       - name: Run stock:now command
-        run: php pastock stock:now
+        run: php artisan stock:now
 
       - name: Run stock:query command
-        run: php pastock stock:query 2330
+        run: php artisan stock:query 2330
 
       - name: Run stock:pers command
-        run: php pastock stock:pers --filter-per-lt=13 --filter-pbr-lt=0.7
+        run: php artisan stock:pers --filter-per-lt=13 --filter-pbr-lt=0.7
