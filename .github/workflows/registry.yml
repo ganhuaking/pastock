@@ -12,6 +12,6 @@ jobs:
         with:
           name: ganhuaking/pastock
           tags: "latest"
-          username: ${{ secrets.GHCR_USERNAME }}
-          password: ${{ secrets.GHCR_PAT }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
